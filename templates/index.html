@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Kyriazidis AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <h2>KYRIAZIDIS AI</h2>
+        <p>Created by Κυριαζίδης</p>
+
+        <input id="username" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
+
+        <button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+
+        <p id="userLabel">Not logged in</p>
+
+        <button onclick="newChat()">+ New Chat</button>
+
+        <h3>Chats</h3>
+        <div id="chatList"></div>
+
+        <button class="logout" onclick="logout()">Logout</button>
+    </aside>
+
+    <main class="main">
+        <div class="hero">
+            <h1>🤖 Kyriazidis AI</h1>
+            <p>Premium AI assistant by Κυριαζίδης</p>
+
+            <select id="mode">
+                <option value="general">General AI</option>
+                <option value="career">Career Advisor</option>
+                <option value="coding">Coding Assistant</option>
+                <option value="creator">Content Creator</option>
+            </select>
+        </div>
+
+        <div id="chatbox" class="chatbox">
+            <div class="bot-message">
+                Καλώς ήρθες στο Kyriakidis AI. Ρώτα με οτιδήποτε.
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input id="message" placeholder="Γράψε κάτι...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </main>
+
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
