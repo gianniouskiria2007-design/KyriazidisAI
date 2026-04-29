@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Kyriazidhs AI</title>
 
-    <!-- PWA -->
     <link rel="manifest" href="/static/manifest.json">
     <meta name="theme-color" content="#ff0000">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,60 +13,108 @@
 
 <body>
 
-<div class="glow"></div>
+<div class="noise"></div>
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+<div class="orb orb-three"></div>
+
+<div class="floating-icons">
+    <span>⚡</span>
+    <span>🤖</span>
+    <span>🔥</span>
+    <span>💎</span>
+    <span>🚀</span>
+</div>
 
 <div class="app">
 
-    <aside class="sidebar">
-        <h2>Kyriazidhs AI</h2>
-        <p>Created by Κυριαζίδης</p>
+    <aside class="sidebar glass">
+        <div class="brand">
+            <div class="logo">K</div>
+            <div>
+                <h2>Kyriazidhs AI</h2>
+                <p>Created by Κυριαζίδης</p>
+            </div>
+        </div>
 
-        <input id="username" placeholder="Username">
-        <input id="password" type="password" placeholder="Password">
+        <div class="auth-card">
+            <input id="username" placeholder="Username">
+            <input id="password" type="password" placeholder="Password">
 
-        <button onclick="register()">Register</button>
-        <button onclick="login()">Login</button>
+            <div class="auth-buttons">
+                <button onclick="register()">Register</button>
+                <button onclick="login()">Login</button>
+            </div>
 
-        <p id="userLabel">Not logged in</p>
+            <p id="userLabel">Not logged in</p>
+        </div>
 
-        <button onclick="newChat()">+ New Chat</button>
+        <button class="new-chat" onclick="newChat()">+ New Chat</button>
 
-        <h3>Chats</h3>
+        <h3>Conversations</h3>
         <div id="chatList"></div>
 
         <button class="logout" onclick="logout()">Logout</button>
     </aside>
 
     <main class="main">
-        <div class="hero">
-            <h1>🤖 Kyriazidhs AI</h1>
-            <p>Premium AI assistant</p>
 
-            <select id="mode">
-                <option value="general">General AI</option>
-                <option value="career">Career Advisor</option>
-                <option value="coding">Coding Assistant</option>
-                <option value="creator">Content Creator</option>
-            </select>
-        </div>
+        <section class="hero glass">
+            <div class="hero-badge">PREMIUM AI EXPERIENCE</div>
 
-        <div id="chatbox" class="chatbox">
-            <div class="bot-message">
-                Καλώς ήρθες στο Kyriazidhs AI 🚀 Ρώτα με οτιδήποτε.
+            <h1>Kyriazidhs AI</h1>
+
+            <p>
+                Ένα advanced AI assistant με premium design, γρήγορες απαντήσεις,
+                modes και εμπειρία σαν κανονική εφαρμογή.
+            </p>
+
+            <div class="mode-grid">
+                <button class="mode-card active" onclick="setMode('general', this)">
+                    <span>🧠</span>
+                    General AI
+                </button>
+
+                <button class="mode-card" onclick="setMode('career', this)">
+                    <span>🎯</span>
+                    Career
+                </button>
+
+                <button class="mode-card" onclick="setMode('coding', this)">
+                    <span>💻</span>
+                    Coding
+                </button>
+
+                <button class="mode-card" onclick="setMode('creator', this)">
+                    <span>🎥</span>
+                    Creator
+                </button>
             </div>
-        </div>
 
-        <div class="input-area">
-            <input id="message" placeholder="Γράψε κάτι...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
+            <input type="hidden" id="mode" value="general">
+        </section>
+
+        <section class="chat-panel glass">
+            <div id="chatbox" class="chatbox">
+                <div class="bot-message">
+                    Καλώς ήρθες στο Kyriazidhs AI 🚀<br>
+                    Ρώτα με οτιδήποτε. Μπορώ να σε βοηθήσω με ιδέες, προγραμματισμό,
+                    σχολείο, καριέρα, content και ό,τι άλλο θέλεις.
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input id="message" placeholder="Γράψε κάτι δυνατό...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </section>
+
     </main>
 
 </div>
 
 <script src="/static/script.js"></script>
 
-<!-- PWA Service Worker -->
 <script>
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/static/service-worker.js")

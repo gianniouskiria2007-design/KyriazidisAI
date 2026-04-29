@@ -1,3 +1,18 @@
+let currentMode = "general";
+
+function setMode(mode, element) {
+    currentMode = mode;
+    document.getElementById("mode").value = mode;
+
+    document.querySelectorAll(".mode-card").forEach(card => {
+        card.classList.remove("active");
+    });
+
+    element.classList.add("active");
+
+    addMessage("Mode άλλαξε σε: " + element.innerText.trim(), "bot");
+}
+
 function addMessage(text, type) {
     const chatbox = document.getElementById("chatbox");
     const div = document.createElement("div");
@@ -13,7 +28,6 @@ function addMessage(text, type) {
 
 function sendMessage() {
     const input = document.getElementById("message");
-    const mode = document.getElementById("mode").value;
     const message = input.value.trim();
 
     if (!message) return;
@@ -26,7 +40,10 @@ function sendMessage() {
     fetch("/chat", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({message, mode})
+        body: JSON.stringify({
+            message: message,
+            mode: currentMode
+        })
     })
     .then(res => res.json())
     .then(data => {
@@ -34,14 +51,14 @@ function sendMessage() {
         loadConversations();
     })
     .catch(error => {
-        loading.innerText = "Κάτι πήγε στραβά.";
+        loading.innerText = "Κάτι πήγε στραβά. Δοκίμασε ξανά.";
         console.error(error);
     });
 }
 
 function register() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
     fetch("/register", {
         method: "POST",
@@ -53,8 +70,8 @@ function register() {
 }
 
 function login() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
     fetch("/login", {
         method: "POST",
@@ -77,7 +94,8 @@ function logout() {
     .then(res => res.json())
     .then(() => {
         document.getElementById("userLabel").innerText = "Not logged in";
-        document.getElementById("chatbox").innerHTML = "";
+        document.getElementById("chatbox").innerHTML =
+            `<div class="bot-message">Έγινε logout. Μπορείς να συνεχίσεις σαν guest.</div>`;
         document.getElementById("chatList").innerHTML = "";
         alert("Έγινε logout.");
     });
@@ -88,7 +106,7 @@ function newChat() {
     .then(res => res.json())
     .then(() => {
         document.getElementById("chatbox").innerHTML =
-            `<div class="bot-message">Νέα συνομιλία. Τι θέλεις να κάνουμε;</div>`;
+            `<div class="bot-message">Νέα συνομιλία 🚀 Τι θέλεις να κάνουμε;</div>`;
         loadConversations();
     });
 }
@@ -127,4 +145,10 @@ document.getElementById("message").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         sendMessage();
     }
+});
+
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        addMessage("Το σύστημα είναι έτοιμο. Διάλεξε mode ή γράψε κατευθείαν την ερώτησή σου.", "bot");
+    }, 700);
 });
