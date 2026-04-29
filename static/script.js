@@ -10,7 +10,25 @@ function setMode(mode, element) {
 
     element.classList.add("active");
 
-    addMessage("Mode άλλαξε σε: " + element.innerText.trim(), "bot");
+    let message = "";
+
+    if (mode === "general") {
+        message = "🧠 General AI ενεργό. Εδώ μπορείς να ρωτήσεις οτιδήποτε.";
+    }
+
+    if (mode === "career") {
+        message = "🎯 Career Advisor ενεργό. Εδώ θα φτιάξουμε τα άφτιαχτα. Θα σε ρωτήσω για τα ενδιαφέροντά σου και θα σου προτείνω ΜΟΝΟ ένα πράγμα που σου ταιριάζει.";
+    }
+
+    if (mode === "coding") {
+        message = "💻 Coding Assistant ενεργό. Εδώ χτίζουμε projects, διορθώνουμε errors και κάνουμε τον κώδικα επαγγελματικό.";
+    }
+
+    if (mode === "creator") {
+        message = "🎥 Content Creator ενεργό. Εδώ βρίσκουμε ιδέες για βίντεο, TikTok, YouTube, branding και περιεχόμενο που τραβάει προσοχή.";
+    }
+
+    addMessage(message, "bot");
 }
 
 function addMessage(text, type) {

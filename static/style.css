@@ -496,3 +496,35 @@ button:hover {
         display: none;
     }
 }
+.logo-3d {
+    width: 62px;
+    height: 62px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #ff1a1a, #6b0000);
+    display: grid;
+    place-items: center;
+    box-shadow:
+        0 10px 0 #3a0000,
+        0 0 35px rgba(255,0,0,0.8),
+        inset 0 0 18px rgba(255,255,255,0.25);
+    transform: perspective(500px) rotateX(8deg) rotateY(-10deg);
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+.logo-3d span {
+    font-size: 34px;
+    font-weight: 900;
+    color: white;
+    text-shadow:
+        2px 2px 0 #700000,
+        0 0 18px rgba(255,255,255,0.8);
+}
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: perspective(500px) rotateX(8deg) rotateY(-10deg) translateY(0);
+    }
+    50% {
+        transform: perspective(500px) rotateX(12deg) rotateY(10deg) translateY(-6px);
+    }
+}
