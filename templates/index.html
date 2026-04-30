@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="el">
-<head>
-    <meta charset="UTF-8">
-    <title>Kyriazidhs AI</title>
+ <title>Kyriazidhs AI</title>
 
     <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#ff0000">
+    <meta name="theme-color" content="#090000">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/static/style.css">
@@ -13,33 +9,30 @@
 
 <body>
 
-<div class="noise"></div>
-<div class="orb orb-one"></div>
-<div class="orb orb-two"></div>
-<div class="orb orb-three"></div>
-
-<div class="floating-icons">
-    <span>⚡</span>
-    <span>🤖</span>
-    <span>🔥</span>
-    <span>💎</span>
-    <span>🚀</span>
+<div class="space-bg">
+    <div class="stars"></div>
+    <div class="red-nebula"></div>
+    <div class="planet planet-big"></div>
+    <div class="planet planet-small"></div>
+    <div class="shooting-star star-one"></div>
+    <div class="shooting-star star-two"></div>
+    <div class="shooting-star star-three"></div>
 </div>
 
-<div class="app">
+<div class="app-shell">
 
-    <aside class="sidebar glass">
-        <div class="brand">
+    <aside class="sidebar glass-panel">
+
+        <div class="logo-wrap">
             <div class="logo-3d">
-    <span>K</span>
-</div>
-            <div>
-                <h2>Kyriazidhs AI</h2>
-                <p>Created by Κυριαζίδης</p>
+                <span>K</span>
             </div>
+
+            <h2>Kyriazidhs AI</h2>
+            <p>Created by Κυριαζίδης</p>
         </div>
 
-        <div class="auth-card">
+        <div class="auth-box">
             <input id="username" placeholder="Username">
             <input id="password" type="password" placeholder="Password">
 
@@ -53,62 +46,81 @@
 
         <button class="new-chat" onclick="newChat()">+ New Chat</button>
 
-        <h3>Conversations</h3>
+        <div class="conversation-title">CONVERSATIONS</div>
         <div id="chatList"></div>
 
-        <button class="logout" onclick="logout()">Logout</button>
+        <button class="logout" onclick="logout()">↪ Logout</button>
+
     </aside>
 
-    <main class="main">
+    <main class="main-content">
 
-        <section class="hero glass">
-            <div class="hero-badge">PREMIUM AI EXPERIENCE</div>
+        <section class="hero-card glass-panel">
 
-            <h1>Kyriazidhs AI</h1>
+            <div class="hero-text">
+                <div class="premium-badge">PREMIUM AI EXPERIENCE</div>
 
-            <p>
-                Ένα advanced AI assistant με premium design, γρήγορες απαντήσεις,
-                modes και εμπειρία σαν κανονική εφαρμογή.
-            </p>
+                <h1>Kyriazidhs AI</h1>
+
+                <p>
+                    Ένα advanced AI assistant με premium design, γρήγορες απαντήσεις,
+                    modes και εμπειρία σαν κανονική εφαρμογή.
+                </p>
+            </div>
 
             <div class="mode-grid">
+
                 <button class="mode-card active" onclick="setMode('general', this)">
                     <span>🧠</span>
-                    General AI
+                    <strong>General AI</strong>
                 </button>
 
                 <button class="mode-card" onclick="setMode('career', this)">
                     <span>🎯</span>
-                    Career
+                    <strong>Career</strong>
                 </button>
 
                 <button class="mode-card" onclick="setMode('coding', this)">
                     <span>💻</span>
-                    Coding
+                    <strong>Coding</strong>
                 </button>
 
                 <button class="mode-card" onclick="setMode('creator', this)">
-                    <span>🎥</span>
-                    Creator
+                    <span>🎬</span>
+                    <strong>Creator</strong>
                 </button>
+
             </div>
 
             <input type="hidden" id="mode" value="general">
+
         </section>
 
-        <section class="chat-panel glass">
+        <section class="chat-card glass-panel">
+
             <div id="chatbox" class="chatbox">
-                <div class="bot-message">
-                    Καλώς ήρθες στο Kyriazidhs AI 🚀<br>
-                    Ρώτα με οτιδήποτε. Μπορώ να σε βοηθήσω με ιδέες, προγραμματισμό,
-                    σχολείο, καριέρα, content και ό,τι άλλο θέλεις.
+
+                <div class="bot-row">
+                    <div class="mini-logo">K</div>
+
+                    <div class="bot-message">
+                        <strong>Καλώς ήρθες στο Kyriazidhs AI 🚀</strong><br><br>
+                        Ρώτα με οτιδήποτε. Μπορώ να σε βοηθήσω με ιδέες, προγραμματισμό,
+                        σχολείο, καριέρα, content και ό,τι άλλο θέλεις.
+                    </div>
                 </div>
+
+                <div class="system-message">
+                    ✧ Το σύστημα είναι έτοιμο. Διάλεξε mode ή γράψε κατευθείαν την ερώτησή σου.
+                </div>
+
             </div>
 
             <div class="input-area">
                 <input id="message" placeholder="Γράψε κάτι δυνατό...">
-                <button onclick="sendMessage()">Send</button>
+                <button onclick="sendMessage()">➤</button>
             </div>
+
         </section>
 
     </main>
