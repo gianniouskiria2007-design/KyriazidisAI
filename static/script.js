@@ -34,3 +34,11 @@ function setMode(mode, element) {
     const messageDiv = addMessage(botIntro, "bot");
     messageDiv.id = "modeIntroMessage";
 }
+const cursorGlow = document.getElementById("cursorGlow");
+
+document.addEventListener("mousemove", function(e) {
+    if (cursorGlow) {
+        cursorGlow.style.left = e.clientX + "px";
+        cursorGlow.style.top = e.clientY + "px";
+    }
+});

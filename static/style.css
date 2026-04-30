@@ -307,3 +307,170 @@ body {
         font-size: 30px;
     }
 }
+/* ---------- NEXT LEVEL PREMIUM EFFECTS ---------- */
+
+body {
+    cursor: default;
+}
+
+/* Cursor glow follower */
+.cursor-glow {
+    position: fixed;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(255,0,0,0.18), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    filter: blur(20px);
+}
+
+/* Premium 3D logo upgrade */
+.logo-3d {
+    position: relative;
+    transform-style: preserve-3d;
+    background:
+        radial-gradient(circle at 30% 30%, #ff6b6b, #ff0000 35%, #250000 80%);
+    box-shadow:
+        0 0 25px rgba(255,0,0,0.9),
+        inset 0 0 20px rgba(255,255,255,0.25),
+        inset -10px -10px 25px rgba(0,0,0,0.8);
+}
+
+.logo-3d::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.18);
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.2);
+}
+
+.logo-3d::after {
+    content: "";
+    position: absolute;
+    width: 130%;
+    height: 130%;
+    border-radius: 50%;
+    border: 2px solid rgba(255,0,0,0.35);
+    animation: logoRing 4s linear infinite;
+}
+
+.logo-3d span {
+    z-index: 2;
+    text-shadow:
+        0 0 10px white,
+        0 0 25px red,
+        3px 3px 0 #550000;
+}
+
+/* Panels hover */
+.glass-panel {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+}
+
+.glass-panel:hover {
+    border-color: rgba(255,0,0,0.5);
+    box-shadow:
+        0 0 35px rgba(255,0,0,0.22),
+        inset 0 0 35px rgba(255,0,0,0.05);
+}
+
+/* Mode card premium */
+.mode-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.mode-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.16),
+        transparent
+    );
+    transform: translateX(-120%);
+    transition: 0.6s;
+}
+
+.mode-card:hover::before,
+.mode-card.active::before {
+    transform: translateX(120%);
+}
+
+.mode-card span {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 8px rgba(255,0,0,0.8));
+}
+
+/* Input premium glow */
+.input-area input:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 2px rgba(255,0,0,0.35),
+        0 0 25px rgba(255,0,0,0.25);
+}
+
+.input-area button {
+    box-shadow: 0 0 25px rgba(255,0,0,0.55);
+}
+
+.input-area button:hover {
+    transform: scale(1.08) rotate(-8deg);
+}
+
+/* Chat bubble polish */
+.bot-message,
+.user-message,
+.system-message {
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+}
+
+.user-message {
+    box-shadow: 0 0 20px rgba(255,0,0,0.25);
+}
+
+/* Better animation keyframes */
+@keyframes logoRing {
+    from {
+        transform: rotate(0deg) scale(1);
+        opacity: 0.7;
+    }
+    to {
+        transform: rotate(360deg) scale(1.08);
+        opacity: 0.25;
+    }
+}
+
+/* Super mobile polish */
+@media (max-width: 600px) {
+    .logo-3d {
+        width: 95px;
+        height: 95px;
+        font-size: 46px;
+    }
+
+    .hero-card {
+        padding: 24px;
+    }
+
+    .hero-text h1 {
+        font-size: 44px;
+    }
+
+    .mode-card {
+        min-height: 90px;
+    }
+
+    .input-area button {
+        width: 100%;
+        border-radius: 16px;
+    }
+}
