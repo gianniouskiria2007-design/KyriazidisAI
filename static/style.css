@@ -779,3 +779,123 @@ button {
     backdrop-filter: blur(18px) saturate(170%) !important;
     -webkit-backdrop-filter: blur(18px) saturate(170%) !important;
 }
+/* ---------- LIVE SPACE BACKGROUND ---------- */
+
+#spaceCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -100;
+    background: #000;
+}
+
+/* κρύβουμε παλιά backgrounds */
+.space-bg,
+.galaxy-bg,
+.stars,
+.nebula,
+.red-nebula,
+.planet,
+.shooting-star,
+.orb {
+    display: none !important;
+}
+
+/* πιο διάφανο glass για να φαίνεται το wallpaper */
+.glass-panel,
+.sidebar,
+.hero-card,
+.chat-card {
+    background: rgba(5, 5, 5, 0.48) !important;
+    backdrop-filter: blur(18px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(160%) !important;
+    border: 1px solid rgba(255, 70, 70, 0.28) !important;
+    box-shadow:
+        0 0 45px rgba(255, 0, 0, 0.18),
+        inset 0 0 35px rgba(255, 255, 255, 0.035) !important;
+}
+
+/* ---------- LIVE 3D LOGO ---------- */
+
+.orb-logo {
+    width: 116px;
+    height: 116px;
+    margin: 0 auto 18px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    perspective: 900px;
+    filter: drop-shadow(0 0 26px rgba(255, 0, 0, 0.9));
+}
+
+.orb-core {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-size: 54px;
+    font-weight: 900;
+    background:
+        radial-gradient(circle at 30% 25%, #ff9a9a, #ff0000 38%, #3b0000 74%, #090000);
+    box-shadow:
+        0 0 35px rgba(255,0,0,0.95),
+        inset 0 0 20px rgba(255,255,255,0.35),
+        inset -18px -18px 30px rgba(0,0,0,0.9);
+    text-shadow:
+        0 0 12px white,
+        0 0 25px red,
+        4px 4px 0 #5a0000;
+    animation: logoCoreFloat 3.5s ease-in-out infinite;
+    z-index: 3;
+}
+
+.orb-ring {
+    position: absolute;
+    width: 106px;
+    height: 106px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 60, 60, 0.55);
+    box-shadow:
+        0 0 20px rgba(255,0,0,0.65),
+        inset 0 0 18px rgba(255,0,0,0.25);
+}
+
+.ring-one {
+    transform: rotateX(68deg) rotateZ(25deg);
+    animation: ringSpinOne 4s linear infinite;
+}
+
+.ring-two {
+    transform: rotateX(70deg) rotateZ(-55deg);
+    animation: ringSpinTwo 5.5s linear infinite reverse;
+}
+
+@keyframes logoCoreFloat {
+    0%, 100% {
+        transform: translateY(0) rotateY(-8deg);
+    }
+    50% {
+        transform: translateY(-8px) rotateY(12deg);
+    }
+}
+
+@keyframes ringSpinOne {
+    from {
+        transform: rotateX(68deg) rotateZ(0deg);
+    }
+    to {
+        transform: rotateX(68deg) rotateZ(360deg);
+    }
+}
+
+@keyframes ringSpinTwo {
+    from {
+        transform: rotateX(70deg) rotateZ(0deg);
+    }
+    to {
+        transform: rotateX(70deg) rotateZ(360deg);
+    }
+}

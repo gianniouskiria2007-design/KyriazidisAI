@@ -368,3 +368,220 @@ if (canvas && typeof THREE !== "undefined") {
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 }
+/* ---------- LIVE 3D SPACE BACKGROUND ---------- */
+
+const spaceCanvas = document.getElementById("spaceCanvas");
+
+if (spaceCanvas && typeof THREE !== "undefined") {
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+        70,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+    );
+
+    const renderer = new THREE.WebGLRenderer({
+        canvas: spaceCanvas,
+        antialias: true,
+        alpha: false
+    });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    camera.position.z = 8;
+
+    /* αστέρια άσπρα */
+    function createStars(count, color, size, spread) {
+        const geometry = new THREE.BufferGeometry();
+        const positions = [];
+
+        for (let i = 0; i < count; i++) {
+            positions.push(
+                (Math.random() - 0.5) * spread,
+                (Math.random() - 0.5) * spread,
+                (Math.random() - 0.5) * spread
+            );
+        }
+
+        geometry.setAttribute(
+            "position",
+            new THREE.Float32BufferAttribute(positions, 3)
+        );
+
+        const material = new THREE.PointsMaterial({
+            color: color,
+            size: size,
+            transparent: true,
+            opacity: 0.9
+        });
+
+        const stars = new THREE.Points(geometry, material);
+        scene.add(stars);
+        return stars;
+    }
+
+    const whiteStars = createStars(1800, 0xffffff, 0.035, 90);
+    const redStars = createStars(650, 0xff2020, 0.055, 75);
+    const dimStars = createStars(900, 0x777777, 0.025, 100);
+
+    /* κόκκινο νεφέλωμα σαν background glow */
+    const nebulaGeometry = new THREE.PlaneGeometry(26, 14);
+    const nebulaMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff0000,
+        transparent: true,
+        opacity: 0.10
+    });
+
+    const nebula = new THREE.Mesh(nebulaGeometry, nebulaMaterial);
+    nebula.position.set(3, 0.6, -8);
+    scene.add(nebula);
+
+    /* μεγάλος κόκκινος πλανήτης δεξιά */
+    const planetGeometry = new THREE.SphereGeometry(1.75, 96, 96);
+    const planetMaterial = new THREE.MeshStandardMaterial({
+        color: 0x9b0000,
+        roughness: 0.52,
+        metalness: 0.1,
+        emissive: 0x220000
+    });
+
+    const bigPlanet = new THREE.Mesh(planetGeometry, planetMaterial);
+    bigPlanet.position.set(5.2, 1.25, -1.4);
+    scene.add(bigPlanet);
+
+    const bigPlanetGlow = new THREE.Mesh(
+        new THREE.SphereGeometry(2.05, 96, 96),
+        new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            transparent: true,
+            opacity: 0.13
+        })
+    );
+    bigPlanetGlow.position.copy(bigPlanet.position);
+    scene.add(bigPlanetGlow);
+
+    /* μικρός πλανήτης πάνω δεξιά */
+    const smallPlanet = new THREE.Mesh(
+        new THREE.SphereGeometry(0.55, 48, 48),
+        new THREE.MeshStandardMaterial({
+            color: 0x330000,
+            emissive: 0x110000,
+            roughness: 0.6
+        })
+    );
+    smallPlanet.position.set(2.4, 3.1, -2.2);
+    scene.add(smallPlanet);
+
+    /* μικρός πλανήτης κάτω αριστερά */
+    const lowerPlanet = new THREE.Mesh(
+        new THREE.SphereGeometry(0.8, 48, 48),
+        new THREE.MeshStandardMaterial({
+            color: 0x780000,
+            emissive: 0x180000,
+            roughness: 0.55
+        })
+    );
+    lowerPlanet.position.set(-5.2, -2.9, -2);
+    scene.add(lowerPlanet);
+
+    /* φώτα */
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
+    scene.add(ambientLight);
+
+    const redLight = new THREE.PointLight(0xff0000, 3.4, 30);
+    redLight.position.set(5, 4, 6);
+    scene.add(redLight);
+
+    const softWhite = new THREE.PointLight(0xffffff, 0.7, 30);
+    softWhite.position.set(-4, 2, 5);
+    scene.add(softWhite);
+
+    /* πεφταστέρια */
+    const shootingStars = [];
+
+    function createShootingStar() {
+        const geometry = new THREE.BufferGeometry();
+
+        const points = [
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(-1.4, -0.55, 0)
+        ];
+
+        geometry.setFromPoints(points);
+
+        const material = new THREE.LineBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.9
+        });
+
+        const star = new THREE.Line(geometry, material);
+
+        star.position.set(
+            Math.random() * 10 - 2,
+            5.2,
+            Math.random() * -4
+        );
+
+        star.userData.speed = 0.045 + Math.random() * 0.045;
+
+        scene.add(star);
+        shootingStars.push(star);
+    }
+
+    setInterval(createShootingStar, 1300);
+
+    /* mouse parallax */
+    let mouseX = 0;
+    let mouseY = 0;
+
+    document.addEventListener("mousemove", (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 0.35;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 0.35;
+    });
+
+    function animateSpace() {
+        requestAnimationFrame(animateSpace);
+
+        whiteStars.rotation.y += 0.00035;
+        redStars.rotation.y -= 0.00025;
+        dimStars.rotation.x += 0.00012;
+
+        nebula.rotation.z += 0.0007;
+        nebula.material.opacity = 0.09 + Math.sin(Date.now() * 0.001) * 0.025;
+
+        bigPlanet.rotation.y += 0.0035;
+        bigPlanet.position.y = 1.25 + Math.sin(Date.now() * 0.0008) * 0.08;
+        bigPlanetGlow.position.copy(bigPlanet.position);
+
+        smallPlanet.rotation.y -= 0.004;
+        lowerPlanet.rotation.y += 0.0025;
+
+        camera.position.x += (mouseX - camera.position.x) * 0.025;
+        camera.position.y += (-mouseY - camera.position.y) * 0.025;
+        camera.lookAt(scene.position);
+
+        shootingStars.forEach((star, index) => {
+            star.position.x -= star.userData.speed * 2.8;
+            star.position.y -= star.userData.speed;
+
+            if (star.position.y < -5 || star.position.x < -8) {
+                scene.remove(star);
+                shootingStars.splice(index, 1);
+            }
+        });
+
+        renderer.render(scene, camera);
+    }
+
+    animateSpace();
+
+    window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+}
