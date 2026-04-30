@@ -576,7 +576,7 @@ chatbox {
 .sidebar,
 .hero-card,
 .chat-card {
-    background: rgba(20, 0, 0, 0.25) !important;
+    background: rgba(20, 0, 0, 0.20) !important;
     backdrop-filter: blur(16px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     border: 1px solid rgba(255, 60, 60, 0.28) !important;
@@ -753,4 +753,29 @@ button {
     to {
         transform: translateY(800px) translateX(-300px);
     }
+}
+#spaceCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -50;
+    background: #000;
+}
+
+.galaxy-bg,
+.space-bg,
+.stars,
+.nebula,
+.red-nebula {
+    display: none !important;
+}
+
+.glass-panel,
+.sidebar,
+.hero-card,
+.chat-card {
+    background: rgba(20, 0, 0, 0.24) !important;
+    backdrop-filter: blur(18px) saturate(170%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(170%) !important;
 }
