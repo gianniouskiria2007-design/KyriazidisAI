@@ -576,7 +576,7 @@ chatbox {
 .sidebar,
 .hero-card,
 .chat-card {
-    background: rgba(20, 0, 0, 0.28) !important;
+    background: rgba(20, 0, 0, 0.25) !important;
     backdrop-filter: blur(16px) saturate(160%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
     border: 1px solid rgba(255, 60, 60, 0.28) !important;
@@ -645,5 +645,112 @@ button {
     }
     100% {
         transform: translateX(120%);
+    }
+}
+/* ---------- GALAXY BACKGROUND ---------- */
+
+.galaxy-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #050000, #000000);
+}
+
+/* STARS */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(rgba(255,0,0,0.8) 1px, transparent 1px),
+        radial-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 120px 120px, 200px 200px, 80px 80px;
+    animation: starsMove 100s linear infinite;
+}
+
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to { transform: translateY(-2000px); }
+}
+
+/* NEBULA */
+.nebula {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 70% 40%, rgba(255,0,0,0.4), transparent 40%);
+    filter: blur(60px);
+    animation: nebulaMove 20s ease-in-out infinite;
+}
+
+@keyframes nebulaMove {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+/* PLANETS */
+.planet {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff0000, #2a0000);
+    box-shadow: 0 0 100px rgba(255,0,0,0.5);
+}
+
+.planet-1 {
+    width: 260px;
+    height: 260px;
+    right: 8%;
+    top: 18%;
+    animation: floatPlanet 8s ease-in-out infinite;
+}
+
+.planet-2 {
+    width: 140px;
+    height: 140px;
+    left: 10%;
+    top: 12%;
+    animation: floatPlanet 6s ease-in-out infinite;
+}
+
+@keyframes floatPlanet {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* SHOOTING STARS */
+.shooting-star {
+    position: absolute;
+    width: 2px;
+    height: 120px;
+    background: linear-gradient(white, transparent);
+    opacity: 0.8;
+}
+
+.s1 {
+    left: 20%;
+    top: -10%;
+    animation: shoot 6s linear infinite;
+}
+
+.s2 {
+    left: 60%;
+    top: -5%;
+    animation: shoot 8s linear infinite;
+}
+
+.s3 {
+    left: 80%;
+    top: -15%;
+    animation: shoot 7s linear infinite;
+}
+
+@keyframes shoot {
+    from {
+        transform: translateY(-100px) translateX(0);
+    }
+    to {
+        transform: translateY(800px) translateX(-300px);
     }
 }
