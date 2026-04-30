@@ -1,5 +1,6 @@
 let currentMode = "general";
 
+/* ---------- MODE ---------- */
 function setMode(mode, element) {
     currentMode = mode;
     document.getElementById("mode").value = mode;
@@ -11,36 +12,35 @@ function setMode(mode, element) {
     element.classList.add("active");
 
     const oldModeMessage = document.getElementById("modeIntroMessage");
-    if (oldModeMessage) {
-        oldModeMessage.remove();
-    }
+    if (oldModeMessage) oldModeMessage.remove();
 
     let botIntro = "";
 
     if (mode === "general") {
-        botIntro = "🧠 Μπήκαμε σε General AI Mode.\n\nΕδώ μπορείς να με ρωτήσεις οτιδήποτε.";
+        botIntro = "🧠 Μπήκαμε σε General AI Mode.\n\nΡώτα με οτιδήποτε.";
     }
 
     if (mode === "career") {
-        botIntro = "🎯 Μπήκαμε σε Career Advisor Mode.\n\nΕδώ θα μιλήσουμε για τα ενδιαφέροντά σου και θα σου προτείνω ΜΟΝΟ ένα πράγμα που σου ταιριάζει.";
+        botIntro = "🎯 Μπήκαμε σε Career Mode.\n\nΠες μου για σένα και θα σου προτείνω ΜΟΝΟ ένα πράγμα.";
     }
 
     if (mode === "coding") {
-        botIntro = "💻 Μπήκαμε σε Coding Assistant Mode.\n\nΕδώ φτιάχνουμε projects, διορθώνουμε errors και κάνουμε τον κώδικα επαγγελματικό.";
+        botIntro = "💻 Μπήκαμε σε Coding Mode.\n\nΦτιάχνουμε projects και διορθώνουμε code.";
     }
 
     if (mode === "creator") {
-        botIntro = "🎥 Μπήκαμε σε Content Creator Mode.\n\nΕδώ βρίσκουμε ιδέες για TikTok, YouTube, branding και περιεχόμενο που τραβάει προσοχή.";
+        botIntro = "🎥 Μπήκαμε σε Creator Mode.\n\nΒρίσκουμε ιδέες για content.";
     }
 
-    const messageDiv = addMessage(botIntro, "bot");
-    messageDiv.id = "modeIntroMessage";
+    const msg = addMessage(botIntro, "bot");
+    msg.id = "modeIntroMessage";
 }
 
+/* ---------- ADD MESSAGE ---------- */
 function addMessage(text, type) {
     const chatbox = document.getElementById("chatbox");
-    const div = document.createElement("div");
 
+    const div = document.createElement("div");
     div.className = type === "user" ? "user-message" : "bot-message";
     div.innerText = text;
 
@@ -50,6 +50,23 @@ function addMessage(text, type) {
     return div;
 }
 
+/* ---------- TYPING EFFECT ---------- */
+function typeText(element, text) {
+    element.innerText = "";
+    let i = 0;
+
+    function typing() {
+        if (i < text.length) {
+            element.innerText += text.charAt(i);
+            i++;
+            setTimeout(typing, 12);
+        }
+    }
+
+    typing();
+}
+
+/* ---------- SEND MESSAGE ---------- */
 function sendMessage() {
     const input = document.getElementById("message");
     const message = input.value.trim();
@@ -71,106 +88,75 @@ function sendMessage() {
     })
     .then(res => res.json())
     .then(data => {
-        loading.innerText = data.reply;
-        loadConversations();
+        typeText(loading, data.reply);
     })
-    .catch(error => {
-        loading.innerText = "Κάτι πήγε στραβά. Δοκίμασε ξανά.";
-        console.error(error);
+    .catch(() => {
+        loading.innerText = "❌ Error. Δοκίμασε ξανά.";
     });
 }
 
+/* ---------- VOICE INPUT ---------- */
+function startVoice() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "el-GR";
+
+    recognition.onresult = function(event) {
+        const text = event.results[0][0].transcript;
+        document.getElementById("message").value = text;
+    };
+
+    recognition.start();
+}
+
+/* ---------- AUTH ---------- */
 function register() {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
     fetch("/register", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username, password})
+        body: JSON.stringify({ username, password })
     })
     .then(res => res.json())
     .then(data => alert(data.message));
 }
 
 function login() {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
     fetch("/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username, password})
+        body: JSON.stringify({ username, password })
     })
     .then(res => res.json())
     .then(data => {
         alert(data.message);
-
         if (data.status === "success") {
             document.getElementById("userLabel").innerText = "Logged in as: " + username;
-            loadConversations();
         }
     });
 }
 
 function logout() {
-    fetch("/logout", {method: "POST"})
-    .then(res => res.json())
+    fetch("/logout", { method: "POST" })
     .then(() => {
         document.getElementById("userLabel").innerText = "Not logged in";
         document.getElementById("chatbox").innerHTML =
-            `<div class="bot-message">Έγινε logout. Μπορείς να συνεχίσεις σαν guest.</div>`;
-        document.getElementById("chatList").innerHTML = "";
-        alert("Έγινε logout.");
+            `<div class="bot-message">Έγινε logout.</div>`;
     });
 }
 
-function newChat() {
-    fetch("/new_chat", {method: "POST"})
-    .then(res => res.json())
-    .then(() => {
-        document.getElementById("chatbox").innerHTML =
-            `<div class="bot-message">Νέα συνομιλία 🚀 Τι θέλεις να κάνουμε;</div>`;
-        loadConversations();
-    });
-}
-
-function loadConversations() {
-    fetch("/conversations")
-    .then(res => res.json())
-    .then(data => {
-        const list = document.getElementById("chatList");
-        list.innerHTML = "";
-
-        data.forEach(chat => {
-            const btn = document.createElement("button");
-            btn.className = "chat-btn";
-            btn.innerText = chat.title;
-            btn.onclick = () => loadChat(chat.id);
-            list.appendChild(btn);
-        });
-    });
-}
-
-function loadChat(id) {
-    fetch("/load_chat/" + id)
-    .then(res => res.json())
-    .then(messages => {
-        const chatbox = document.getElementById("chatbox");
-        chatbox.innerHTML = "";
-
-        messages.forEach(msg => {
-            addMessage(msg.message, msg.role === "user" ? "user" : "bot");
-        });
-    });
-}
-
+/* ---------- ENTER SEND ---------- */
 document.getElementById("message").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         sendMessage();
     }
 });
 
+/* ---------- CURSOR GLOW ---------- */
 const cursorGlow = document.getElementById("cursorGlow");
 
 document.addEventListener("mousemove", function(e) {
@@ -179,12 +165,12 @@ document.addEventListener("mousemove", function(e) {
         cursorGlow.style.top = e.clientY + "px";
     }
 });
+
+/* ---------- LOADER ---------- */
 window.addEventListener("load", function() {
     const loader = document.getElementById("loader");
 
     setTimeout(() => {
-        if (loader) {
-            loader.classList.add("hidden");
-        }
-    }, 2600);
+        if (loader) loader.classList.add("hidden");
+    }, 2500);
 });
