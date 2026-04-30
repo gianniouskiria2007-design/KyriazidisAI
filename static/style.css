@@ -557,3 +557,16 @@ body {
         width: 100%;
     }
 }
+chatbox {
+    overflow-x: hidden;
+}
+
+.bot-message,
+.user-message,
+.system-message {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+}

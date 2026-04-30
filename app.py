@@ -4,11 +4,12 @@ from dotenv import load_dotenv
 import sqlite3
 import os
 import uuid
+import re
 
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "kyriazidis_super_secret_key"
+app.secret_key = "kyriazidhs_super_secret_key"
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
@@ -30,6 +31,14 @@ def init_db():
     """)
 
     c.execute("""
+    CREATE TABLE IF NOT EXISTS conversations (
+        id TEXT PRIMARY KEY,
+        username TEXT,
+        title TEXT
+    )
+    """)
+
+    c.execute("""
     CREATE TABLE IF NOT EXISTS chats (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
@@ -40,10 +49,10 @@ def init_db():
     """)
 
     c.execute("""
-    CREATE TABLE IF NOT EXISTS conversations (
-        id TEXT PRIMARY KEY,
+    CREATE TABLE IF NOT EXISTS memories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
-        title TEXT
+        memory TEXT
     )
     """)
 
@@ -52,6 +61,39 @@ def init_db():
 
 
 init_db()
+
+
+def clean_reply(text):
+    if not text:
+        return ""
+
+    text = text.replace("\r\n", "\n")
+
+    fixes = {
+        "Είμαιο": "Είμαι ο ",
+        "μπορώνα": "μπορώ να",
+        "σαςβοηθήσω": "σας βοηθήσω",
+        "Πείτεμου": "Πείτε μου",
+        "χρειάζεστεβοήθεια": "χρειάζεστε βοήθεια",
+        "Ωςcoding": "Ως coding",
+        "premiumAIassistant": "premium AI assistant",
+        "KyriazidhsAI": "Kyriazidhs AI"
+    }
+
+    for wrong, correct in fixes.items():
+        text = text.replace(wrong, correct)
+
+    text = re.sub(r",(?=\S)", ", ", text)
+    text = re.sub(r"\.(?=\S)", ". ", text)
+    text = re.sub(r":(?=\S)", ": ", text)
+    text = re.sub(r";(?=\S)", "; ", text)
+
+    text = re.sub(r"([α-ωΑ-Ω])([A-Za-z])", r"\1 \2", text)
+    text = re.sub(r"([A-Za-z])([α-ωΑ-Ω])", r"\1 \2", text)
+
+    text = re.sub(r"[ ]{2,}", " ", text)
+
+    return text.strip()
 
 
 @app.route("/")
@@ -71,10 +113,15 @@ def register():
     try:
         conn = db()
         c = conn.cursor()
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        c.execute(
+            "INSERT INTO users (username, password) VALUES (?, ?)",
+            (username, password)
+        )
         conn.commit()
         conn.close()
+
         return jsonify({"status": "success", "message": "Ο λογαριασμός δημιουργήθηκε."})
+
     except sqlite3.IntegrityError:
         return jsonify({"status": "error", "message": "Αυτό το username υπάρχει ήδη."})
 
@@ -87,7 +134,10 @@ def login():
 
     conn = db()
     c = conn.cursor()
-    c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+    c.execute(
+        "SELECT * FROM users WHERE username=? AND password=?",
+        (username, password)
+    )
     user = c.fetchone()
     conn.close()
 
@@ -156,6 +206,27 @@ def load_chat(conversation_id):
     ])
 
 
+@app.route("/save_memory", methods=["POST"])
+def save_memory():
+    data = request.json
+    memory = data.get("memory", "").strip()
+    username = session.get("username", "guest")
+
+    if not memory:
+        return jsonify({"status": "error", "message": "Δεν υπάρχει memory."})
+
+    conn = db()
+    c = conn.cursor()
+    c.execute(
+        "INSERT INTO memories (username, memory) VALUES (?, ?)",
+        (username, memory)
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"status": "success", "message": "Το θυμήθηκα."})
+
+
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
@@ -183,27 +254,16 @@ def chat():
 
         conversation_id = session["conversation_id"]
 
-        mode_prompts = {
-            "general": "Απάντα σαν γενικός AI assistant.",
-            "career": "Λειτούργησε σαν career advisor. Κάνε ερωτήσεις και στο τέλος πρότεινε ΜΟΝΟ ΕΝΑ πράγμα.",
-            "coding": "Λειτούργησε σαν coding assistant. Εξήγησε καθαρά και πρακτικά.",
-            "creator": "Λειτούργησε σαν content creator coach. Δώσε ιδέες για περιεχόμενο."
-        }
-
-        system_prompt = f"""
-Είσαι το Kyriazidis AI, ένα premium AI assistant φτιαγμένο από τον Κυριαζίδη.
-
-Πρέπει να απαντάς στα ελληνικά, εκτός αν ο χρήστης ζητήσει άλλη γλώσσα.
-Αν ο χρήστης γράψει με λάθη ή greeklish, προσπάθησε να καταλάβεις τι εννοεί.
-Να απαντάς καθαρά, φυσικά, έξυπνα και φιλικά.
-Απάντα σε οτιδήποτε γράφει ο χρήστης.
-
-Mode:
-{mode_prompts.get(mode, mode_prompts["general"])}
-"""
-
         conn = db()
         c = conn.cursor()
+
+        c.execute(
+            "SELECT memory FROM memories WHERE username=? ORDER BY id DESC LIMIT 10",
+            (username,)
+        )
+        memories = c.fetchall()
+
+        memory_text = "\n".join([m[0] for m in memories])
 
         c.execute(
             "SELECT role, message FROM chats WHERE username=? AND conversation_id=? ORDER BY id ASC LIMIT 20",
@@ -214,13 +274,38 @@ Mode:
         history = [{"role": role, "content": msg} for role, msg in old_messages]
         history.append({"role": "user", "content": user_message})
 
+        mode_prompts = {
+            "general": "Απάντα σαν γενικός AI assistant.",
+            "career": "Λειτούργησε σαν career advisor. Κάνε ερωτήσεις και στο τέλος πρότεινε ΜΟΝΟ ΕΝΑ πράγμα.",
+            "coding": "Λειτούργησε σαν coding assistant. Εξήγησε καθαρά και πρακτικά.",
+            "creator": "Λειτούργησε σαν content creator coach. Δώσε ιδέες για περιεχόμενο."
+        }
+
+        system_prompt = f"""
+Είσαι το Kyriazidhs AI, ένα premium AI assistant φτιαγμένο από τον Κυριαζίδη.
+
+Πληροφορίες που θυμάσαι για τον χρήστη:
+{memory_text}
+
+Κανόνες απάντησης:
+- Να απαντάς πάντα στα ελληνικά, εκτός αν ο χρήστης ζητήσει άλλη γλώσσα.
+- Να γράφεις με σωστά κενά ανάμεσα στις λέξεις.
+- Μην κολλάς ελληνικές και αγγλικές λέξεις μεταξύ τους.
+- Να χρησιμοποιείς καθαρές παραγράφους.
+- Να απαντάς φυσικά, έξυπνα και χρήσιμα.
+- Αν δεν καταλαβαίνεις κάτι, ρώτα ευγενικά.
+
+Mode:
+{mode_prompts.get(mode, mode_prompts["general"])}
+"""
+
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[{"role": "system", "content": system_prompt}] + history,
-            temperature=0.3
+            temperature=0.25
         )
 
-        bot_reply = response.choices[0].message.content
+        bot_reply = clean_reply(response.choices[0].message.content)
 
         c.execute(
             "INSERT INTO chats (username, conversation_id, role, message) VALUES (?, ?, ?, ?)",
