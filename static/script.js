@@ -179,3 +179,12 @@ document.addEventListener("mousemove", function(e) {
         cursorGlow.style.top = e.clientY + "px";
     }
 });
+window.addEventListener("load", function() {
+    const loader = document.getElementById("loader");
+
+    setTimeout(() => {
+        if (loader) {
+            loader.classList.add("hidden");
+        }
+    }, 2600);
+});
