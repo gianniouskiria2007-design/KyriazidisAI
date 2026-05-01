@@ -1,44 +1,5 @@
 let currentMode = "general";
 
-/* ---------- GUIDE ---------- */
-function showGuide(text) {
-    const guide = document.getElementById("aiGuide");
-    const guideText = document.getElementById("guideText");
-
-    if (!guide || !guideText) return;
-
-    guideText.innerText = "";
-    guide.classList.remove("hidden");
-
-    let i = 0;
-    function typing() {
-        if (i < text.length) {
-            guideText.innerText += text.charAt(i);
-            i++;
-            setTimeout(typing, 15);
-        }
-    }
-
-    typing();
-
-    setTimeout(() => {
-        guide.classList.add("hidden");
-    }, 5000);
-}
-
-/* ---------- HIGHLIGHT ---------- */
-function highlightElement(selector, time = 4000) {
-    const element = document.querySelector(selector);
-    if (!element) return;
-
-    element.classList.add("guide-highlight");
-
-    setTimeout(() => {
-        element.classList.remove("guide-highlight");
-    }, time);
-}
-
-/* ---------- MODE ---------- */
 function setMode(mode, element) {
     currentMode = mode;
     document.getElementById("mode").value = mode;
@@ -48,24 +9,8 @@ function setMode(mode, element) {
     });
 
     element.classList.add("active");
-
-    if (mode === "coding") {
-        showGuide("Είσαι στο Coding Mode. Πες μου τι project θέλεις να φτιάξουμε.");
-        highlightElement(".input-area");
-    }
-
-    if (mode === "career") {
-        showGuide("Εδώ θα βρούμε τι σου ταιριάζει. Πες μου τι σου αρέσει.");
-        highlightElement(".input-area");
-    }
-
-    if (mode === "creator") {
-        showGuide("Θες ιδέες για content; Πες μου πλατφόρμα και κοινό.");
-        highlightElement(".input-area");
-    }
 }
 
-/* ---------- ADD MESSAGE ---------- */
 function addMessage(text, type) {
     const chatbox = document.getElementById("chatbox");
 
@@ -79,7 +24,6 @@ function addMessage(text, type) {
     return div;
 }
 
-/* ---------- TYPING EFFECT ---------- */
 function typeText(element, text) {
     element.innerText = "";
     let i = 0;
@@ -88,14 +32,14 @@ function typeText(element, text) {
         if (i < text.length) {
             element.innerText += text.charAt(i);
             i++;
-            setTimeout(typing, 12);
+            chatbox.scrollTop = chatbox.scrollHeight;
+            setTimeout(typing, 10);
         }
     }
 
     typing();
 }
 
-/* ---------- SEND MESSAGE ---------- */
 function sendMessage() {
     const input = document.getElementById("message");
     const message = input.value.trim();
@@ -124,7 +68,6 @@ function sendMessage() {
     });
 }
 
-/* ---------- AUTH ---------- */
 function register() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -165,18 +108,8 @@ function logout() {
     });
 }
 
-/* ---------- ENTER SEND ---------- */
 document.getElementById("message").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         sendMessage();
     }
-});
-
-/* ---------- AUTO GUIDE ON LOAD ---------- */
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        showGuide("Καλώς ήρθες. Διάλεξε mode ή γράψε κάτι.");
-        highlightElement(".mode-grid", 4000);
-        highlightElement(".input-area", 4000);
-    }, 2500);
 });

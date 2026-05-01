@@ -973,3 +973,13 @@ button {
     visibility: hidden !important;
     display: none !important;
 }
+.ai-guide,
+.guide-avatar,
+.guide-text {
+    display: none !important;
+}
+
+.guide-highlight {
+    box-shadow: none !important;
+    animation: none !important;
+}
