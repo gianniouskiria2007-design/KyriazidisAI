@@ -983,3 +983,26 @@ button {
     box-shadow: none !important;
     animation: none !important;
 }
+/* ---------- AI COMMAND CENTER ---------- */
+
+.ai-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.ai-actions button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255, 0, 0, 0.15);
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.ai-actions button:hover {
+    background: rgba(255, 0, 0, 0.4);
+    transform: scale(1.05);
+}

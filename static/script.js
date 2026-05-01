@@ -139,3 +139,29 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }, 2000);
 });
+function quickAction(type) {
+    let prompt = "";
+
+    if (type === "idea") {
+        prompt = "Δώσε μου 3 startup ideas που μπορώ να ξεκινήσω τώρα.";
+    }
+
+    if (type === "project") {
+        prompt = "Δώσε μου ένα full project για portfolio με βήματα.";
+    }
+
+    if (type === "career") {
+        prompt = "Βοήθησέ με να βρω τι καριέρα μου ταιριάζει.";
+    }
+
+    if (type === "content") {
+        prompt = "Δώσε μου ιδέες για TikTok που θα γίνουν viral.";
+    }
+
+    document.getElementById("message").value = prompt;
+    sendMessage();
+}
+
+function clearChat() {
+    document.getElementById("chatbox").innerHTML = "";
+}
