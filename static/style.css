@@ -1006,3 +1006,29 @@ button {
     background: rgba(255, 0, 0, 0.4);
     transform: scale(1.05);
 }
+.message-tools {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.mini-tool-btn {
+    width: auto !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 0, 0, 0.22) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 0, 0, 0.35) !important;
+    cursor: pointer;
+}
+
+.mini-tool-btn:hover {
+    background: rgba(255, 0, 0, 0.45) !important;
+    transform: scale(1.04);
+}
+
+.message-text {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
