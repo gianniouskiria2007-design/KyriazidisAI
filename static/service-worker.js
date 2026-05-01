@@ -1,4 +1,4 @@
-const CACHE_NAME = "kyriazidhs-ai-cache-v3";
+const CACHE_NAME = "kyriazidhs-ai-cache-v5";
 
 const urlsToCache = [
     "/",

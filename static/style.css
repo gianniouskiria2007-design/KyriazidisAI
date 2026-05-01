@@ -899,3 +899,72 @@ button {
         transform: rotateX(70deg) rotateZ(360deg);
     }
 }
+/* ---------- AI GUIDE ---------- */
+
+.ai-guide {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 280px;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    z-index: 9999;
+    border: 1px solid rgba(255,0,0,0.4);
+    box-shadow: 0 0 20px rgba(255,0,0,0.3);
+    animation: guideFade 0.4s ease;
+}
+
+.guide-avatar {
+    width: 36px;
+    height: 36px;
+    background: red;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.guide-text {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes guideFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ---------- GUIDE HIGHLIGHT ---------- */
+
+.guide-highlight {
+    position: relative;
+    z-index: 9998 !important;
+    box-shadow:
+        0 0 0 4px rgba(255, 0, 0, 0.45),
+        0 0 35px rgba(255, 0, 0, 0.9) !important;
+    animation: highlightPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.04);
+    }
+}

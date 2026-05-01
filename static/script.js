@@ -7,6 +7,20 @@ function setMode(mode, element) {
 
     document.querySelectorAll(".mode-card").forEach(card => {
         card.classList.remove("active");
+        if (mode === "coding") {
+    showGuide("Είσαι στο Coding Mode. Πες μου τι project θέλεις να φτιάξουμε.");
+    highlightElement(".input-area", 4000);
+}
+
+if (mode === "career") {
+    showGuide("Εδώ θα βρούμε τι σου ταιριάζει. Πες μου τι σου αρέσει.");
+    highlightElement(".input-area", 4000);
+}
+
+if (mode === "creator") {
+    showGuide("Θες ιδέες για content; Πες μου πλατφόρμα και κοινό.");
+    highlightElement(".input-area", 4000);
+}
     });
 
     element.classList.add("active");
@@ -584,4 +598,44 @@ if (spaceCanvas && typeof THREE !== "undefined") {
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
+}
+function showGuide(text) {
+    const guide = document.getElementById("aiGuide");
+    const guideText = document.getElementById("guideText");
+
+    guideText.innerText = "";
+    guide.classList.remove("hidden");
+
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            guideText.innerText += text.charAt(i);
+            i++;
+            setTimeout(typing, 15);
+        }
+    }
+
+    typing();
+
+    setTimeout(() => {
+        guide.classList.add("hidden");
+    }, 6000);
+}
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        showGuide("Καλώς ήρθες. Διάλεξε ένα mode ή γράψε κατευθείαν κάτι εδώ κάτω.");
+        highlightElement(".mode-grid", 4500);
+        highlightElement(".input-area", 4500);
+    }, 3000);
+});
+function highlightElement(selector, time = 4000) {
+    const element = document.querySelector(selector);
+
+    if (!element) return;
+
+    element.classList.add("guide-highlight");
+
+    setTimeout(() => {
+        element.classList.remove("guide-highlight");
+    }, time);
 }
