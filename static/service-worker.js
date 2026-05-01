@@ -1,24 +1,19 @@
-const CACHE_NAME = "kyriazidhs-ai-cache-v5";
-
-const urlsToCache = [
-    "/",
-    "/static/style.css",
-    "/static/script.js",
-    "/static/manifest.json"
-];
+const CACHE_NAME = "kyriazidhs-ai-cache-v20";
 
 self.addEventListener("install", event => {
+    self.skipWaiting();
+});
+
+self.addEventListener("activate", event => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(urlsToCache);
-        })
+        caches.keys().then(keys => {
+            return Promise.all(
+                keys.map(key => caches.delete(key))
+            );
+        }).then(() => self.clients.claim())
     );
 });
 
 self.addEventListener("fetch", event => {
-    event.respondWith(
-        caches.match(event.request).then(response => {
-            return response || fetch(event.request);
-        })
-    );
+    event.respondWith(fetch(event.request));
 });
