@@ -639,3 +639,11 @@ function highlightElement(selector, time = 4000) {
         element.classList.remove("guide-highlight");
     }, time);
 }
+function showGuide(text) {
+    speakGuide(text);
+
+    const guide = document.getElementById("aiGuide");
+    const guideText = document.getElementById("guideText");
+
+    ...
+}
