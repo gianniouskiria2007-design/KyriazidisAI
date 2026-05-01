@@ -639,11 +639,35 @@ function highlightElement(selector, time = 4000) {
         element.classList.remove("guide-highlight");
     }, time);
 }
-function showGuide(text) {
-    speakGuide(text);
+function speakGuide(text) {
+    const now = Date.now();
 
-    const guide = document.getElementById("aiGuide");
-    const guideText = document.getElementById("guideText");
+    // ❗ αποφυγή spam / glitch
+    if (now - lastSpeakTime < 3000) return;
+    lastSpeakTime = now;
 
-    ...
+    if (!("speechSynthesis" in window)) return;
+
+    if (text.length > 120) {
+        text = text.substring(0, 120);
+    }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "el-GR";
+    utterance.rate = 0.95;
+    utterance.pitch = 0.9;
+
+    window.speechSynthesis.speak(utterance);
 }
+window.addEventListener("load", function() {
+    const loader = document.getElementById("loader");
+
+    setTimeout(() => {
+        if (loader) {
+            loader.classList.add("hidden");
+            loader.style.display = "none";
+        }
+    }, 2500);
+});

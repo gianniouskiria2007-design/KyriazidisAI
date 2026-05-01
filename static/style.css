@@ -968,3 +968,8 @@ button {
         transform: scale(1.04);
     }
 }
+.loader-screen.hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    display: none !important;
+}
