@@ -2,17 +2,19 @@ let currentMode = "general";
 
 function setMode(mode, element) {
     currentMode = mode;
-    document.getElementById("mode").value = mode;
+    const modeInput = document.getElementById("mode");
+    if (modeInput) modeInput.value = mode;
 
     document.querySelectorAll(".mode-card").forEach(card => {
         card.classList.remove("active");
     });
 
-    element.classList.add("active");
+    if (element) element.classList.add("active");
 }
 
 function addMessage(text, type) {
     const chatbox = document.getElementById("chatbox");
+    if (!chatbox) return null;
 
     const div = document.createElement("div");
     div.className = type === "user" ? "user-message" : "bot-message";
@@ -25,14 +27,22 @@ function addMessage(text, type) {
 }
 
 function typeText(element, text) {
+    if (!element) return;
+
+    const chatbox = document.getElementById("chatbox");
     element.innerText = "";
+
     let i = 0;
 
     function typing() {
         if (i < text.length) {
             element.innerText += text.charAt(i);
             i++;
-            chatbox.scrollTop = chatbox.scrollHeight;
+
+            if (chatbox) {
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+
             setTimeout(typing, 10);
         }
     }
@@ -42,8 +52,9 @@ function typeText(element, text) {
 
 function sendMessage() {
     const input = document.getElementById("message");
-    const message = input.value.trim();
+    if (!input) return;
 
+    const message = input.value.trim();
     if (!message) return;
 
     addMessage(message, "user");
@@ -61,10 +72,10 @@ function sendMessage() {
     })
     .then(res => res.json())
     .then(data => {
-        typeText(loading, data.reply);
+        typeText(loading, data.reply || "Δεν πήρα απάντηση.");
     })
     .catch(() => {
-        loading.innerText = "❌ Error. Δοκίμασε ξανά.";
+        if (loading) loading.innerText = "❌ Error. Δοκίμασε ξανά.";
     });
 }
 
@@ -93,6 +104,7 @@ function login() {
     .then(res => res.json())
     .then(data => {
         alert(data.message);
+
         if (data.status === "success") {
             document.getElementById("userLabel").innerText = "Logged in as: " + username;
         }
@@ -108,8 +120,22 @@ function logout() {
     });
 }
 
-document.getElementById("message").addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        sendMessage();
+document.addEventListener("DOMContentLoaded", function() {
+    const input = document.getElementById("message");
+
+    if (input) {
+        input.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
     }
+
+    const loader = document.getElementById("loader");
+    setTimeout(() => {
+        if (loader) {
+            loader.classList.add("hidden");
+            loader.style.display = "none";
+        }
+    }, 2000);
 });
