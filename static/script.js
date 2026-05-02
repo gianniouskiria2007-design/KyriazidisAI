@@ -31,7 +31,7 @@ function sendMessage(customMessage = null) {
     addMessage(message, "user");
     input.value = "";
 
-    addMessage("AI thinking...", "bot");
+    const thinking = addMessage("● ● ●", "bot");
 
     fetch("/chat", {
         method: "POST",
@@ -41,7 +41,7 @@ function sendMessage(customMessage = null) {
             mode: currentMode
         })
     })
-    .then(res => res.json())
+   thinking.innerText = data.reply;
     .then(data => {
         const msgs = document.querySelectorAll(".bot-message");
         msgs[msgs.length - 1].innerText = data.reply;
