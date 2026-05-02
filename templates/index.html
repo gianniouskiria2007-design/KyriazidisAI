@@ -1,167 +1,82 @@
- <title>Kyriazidhs AI</title>
-
-    <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#090000">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Kyriazidhs AI</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<div class="galaxy-bg">
-    <div class="stars"></div>
-    <div class="nebula"></div>
-
-    <div class="planet planet-1"></div>
-    <div class="planet planet-2"></div>
-
-    <div class="shooting-star s1"></div>
-    <div class="shooting-star s2"></div>
-    <div class="shooting-star s3"></div>
-</div>
 <body>
-    <canvas id="spaceCanvas"></canvas>
-    <div id="loader" class="loader-screen">
-    <div class="loader-logo">K</div>
-    <h1>Kyriazidhs AI</h1>
-    <p>Initializing premium AI experience...</p>
-    <div class="loader-bar">
-        <div class="loader-progress"></div>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>K AI</h2>
+
+        <button onclick="showPage('dashboard')">🏠 Dashboard</button>
+        <button onclick="showPage('chat')">💬 Chat</button>
+        <button onclick="showPage('tools')">🧠 Tools</button>
+        <button onclick="showPage('profile')">👤 Profile</button>
+        <button onclick="showPage('settings')">⚙️ Settings</button>
     </div>
-</div>
-<div class="cursor-glow" id="cursorGlow"></div>
-<div class="space-bg">
-    <div class="stars"></div>
-    <div class="red-nebula"></div>
-    <div class="planet planet-big"></div>
-    <div class="planet planet-small"></div>
-    <div class="shooting-star star-one"></div>
-    <div class="shooting-star star-two"></div>
-    <div class="shooting-star star-three"></div>
-</div>
 
-<div class="app-shell">
+    <!-- MAIN -->
+    <div class="main">
 
-    <aside class="sidebar glass-panel">
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="page active">
+            <h1>Welcome to Kyriazidhs AI</h1>
+            <p>Αυτό είναι το AI dashboard σου.</p>
 
-        <div class="logo-wrap">
-            <div class="orb-logo">
-    <div class="orb-ring ring-one"></div>
-    <div class="orb-ring ring-two"></div>
-    <div class="orb-core">K</div>
-</div>
-
-            <h2>Kyriazidhs AI</h2>
-            <p>Created by Κυριαζίδης</p>
+            <div class="cards">
+                <div class="card">⚡ Quick Ideas</div>
+                <div class="card">💻 Build Projects</div>
+                <div class="card">🎯 Career Help</div>
+                <div class="card">🎥 Content Ideas</div>
+            </div>
         </div>
 
-        <div class="auth-box">
-            <input id="username" placeholder="Username">
-            <input id="password" type="password" placeholder="Password">
-
-            <div class="auth-buttons">
-                <button onclick="register()">Register</button>
-                <button onclick="login()">Login</button>
+        <!-- CHAT -->
+        <div id="chat" class="page">
+            
+            <div class="ai-actions">
+                <button onclick="quickAction('idea')">⚡ Idea</button>
+                <button onclick="quickAction('project')">💻 Project</button>
+                <button onclick="quickAction('career')">🎯 Career</button>
+                <button onclick="quickAction('content')">🎥 Content</button>
+                <button onclick="clearChat()">🧹 Clear</button>
             </div>
 
-            <p id="userLabel">Not logged in</p>
-        </div>
-
-        <button class="new-chat" onclick="newChat()">+ New Chat</button>
-
-        <div class="conversation-title">CONVERSATIONS</div>
-        <div id="chatList"></div>
-
-        <button class="logout" onclick="logout()">↪ Logout</button>
-
-    </aside>
-
-    <main class="main-content">
-
-        <section class="hero-card glass-panel">
-
-            <div class="hero-text">
-                <div class="premium-badge">PREMIUM AI EXPERIENCE</div>
-
-                <h1>Kyriazidhs AI</h1>
-
-                <p>
-                    Ένα advanced AI assistant με premium design, γρήγορες απαντήσεις,
-                    modes και εμπειρία σαν κανονική εφαρμογή.
-                </p>
-            </div>
-
-            <div class="mode-grid">
-
-                <button class="mode-card active" onclick="setMode('general', this)">
-                    <span>🧠</span>
-                    <strong>General AI</strong>
-                </button>
-
-                <button class="mode-card" onclick="setMode('career', this)">
-                    <span>🎯</span>
-                    <strong>Career</strong>
-                </button>
-
-                <button class="mode-card" onclick="setMode('coding', this)">
-                    <span>💻</span>
-                    <strong>Coding</strong>
-                </button>
-
-                <button class="mode-card" onclick="setMode('creator', this)">
-                    <span>🎬</span>
-                    <strong>Creator</strong>
-                </button>
-
-            </div>
-
-            <input type="hidden" id="mode" value="general">
-
-        </section>
-<div class="ai-actions">
-    <button onclick="quickAction('idea')">⚡ Idea</button>
-    <button onclick="quickAction('project')">💻 Project</button>
-    <button onclick="quickAction('career')">🎯 Career</button>
-    <button onclick="quickAction('content')">🎥 Content</button>
-    <button onclick="clearChat()">🧹 Clear</button>
-</div>
-        <section class="chat-card glass-panel">
-
-            <div id="chatbox" class="chatbox">
-
-                <div class="bot-row">
-                    <div class="mini-logo">K</div>
-
-                    <div class="bot-message">
-                        <strong>Καλώς ήρθες στο Kyriazidhs AI 🚀</strong><br><br>
-                        Ρώτα με οτιδήποτε. Μπορώ να σε βοηθήσω με ιδέες, προγραμματισμό,
-                        σχολείο, καριέρα, content και ό,τι άλλο θέλεις.
-                    </div>
-                </div>
-
-                <div class="system-message">
-                    ✧ Το σύστημα είναι έτοιμο. Διάλεξε mode ή γράψε κατευθείαν την ερώτησή σου.
-                </div>
-
-            </div>
+            <div id="chatbox" class="chatbox"></div>
 
             <div class="input-area">
-                <input id="message" placeholder="Γράψε κάτι δυνατό...">
-                <button onclick="sendMessage()">➤</button>
+                <input id="message" placeholder="Γράψε κάτι...">
+                <button onclick="sendMessage()">Send</button>
             </div>
+        </div>
 
-        </section>
+        <!-- TOOLS -->
+        <div id="tools" class="page">
+            <h1>AI Tools</h1>
+            <p>Εδώ θα βάλουμε AI εργαλεία.</p>
+        </div>
 
-    </main>
+        <!-- PROFILE -->
+        <div id="profile" class="page">
+            <h1>Profile</h1>
+            <p>Username, goals, info κλπ.</p>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="settings" class="page">
+            <h1>Settings</h1>
+            <p>Theme, AI settings κλπ.</p>
+        </div>
+
+    </div>
 
 </div>
 
 <script src="/static/script.js"></script>
-
-<script>
-if ("serviceWorker" in navigator) {
-    // navigator.serviceWorker.register("/static/service-worker.js")
-    .then(() => console.log("Service Worker registered"))
-    .catch(error => console.log("Service Worker error:", error));
-}
-</script>
 </body>
 </html>
