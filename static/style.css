@@ -983,3 +983,17 @@ button {
     box-shadow: none !important;
     animation: none !important;
 }
+.mode-card {
+    position: relative !important;
+    z-index: 999999 !important;
+    pointer-events: auto !important;
+}
+
+.mode-grid {
+    position: relative !important;
+    z-index: 999999 !important;
+}
+
+.hero-card {
+    overflow: visible !important;
+}
