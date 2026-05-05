@@ -1,53 +1,35 @@
- <title>Kyriazidhs AI</title>
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Kyriazidhs AI</title>
 
-    <link rel="manifest" href="/static/manifest.json">
     <meta name="theme-color" content="#090000">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<div class="galaxy-bg">
-    <div class="stars"></div>
-    <div class="nebula"></div>
 
-    <div class="planet planet-1"></div>
-    <div class="planet planet-2"></div>
-
-    <div class="shooting-star s1"></div>
-    <div class="shooting-star s2"></div>
-    <div class="shooting-star s3"></div>
-</div>
 <body>
-    <canvas id="spaceCanvas"></canvas>
-    <div id="loader" class="loader-screen">
+<video class="galaxy-video" autoplay muted loop playsinline>
+    <source src="{{ url_for('static', filename='galaxy-video.mp4') }}" type="video/mp4">
+</video>
+
+<div id="loader" class="loader-screen">
     <div class="loader-logo">K</div>
     <h1>Kyriazidhs AI</h1>
     <p>Initializing premium AI experience...</p>
-    <div class="loader-bar">
-        <div class="loader-progress"></div>
-    </div>
 </div>
-<div class="cursor-glow" id="cursorGlow"></div>
-<div class="space-bg">
-    <div class="stars"></div>
-    <div class="red-nebula"></div>
-    <div class="planet planet-big"></div>
-    <div class="planet planet-small"></div>
-    <div class="shooting-star star-one"></div>
-    <div class="shooting-star star-two"></div>
-    <div class="shooting-star star-three"></div>
-</div>
-
 <div class="app-shell">
 
     <aside class="sidebar glass-panel">
 
         <div class="logo-wrap">
             <div class="orb-logo">
-    <div class="orb-ring ring-one"></div>
-    <div class="orb-ring ring-two"></div>
-    <div class="orb-core">K</div>
-</div>
+                <div class="orb-ring ring-one"></div>
+                <div class="orb-ring ring-two"></div>
+                <div class="orb-core">K</div>
+            </div>
 
             <h2>Kyriazidhs AI</h2>
             <p>Created by Κυριαζίδης</p>
@@ -150,12 +132,5 @@
 
 <script src="/static/script.js"></script>
 
-<script>
-if ("serviceWorker" in navigator) {
-    // navigator.serviceWorker.register("/static/service-worker.js")
-    .then(() => console.log("Service Worker registered"))
-    .catch(error => console.log("Service Worker error:", error));
-}
-</script>
 </body>
 </html>
