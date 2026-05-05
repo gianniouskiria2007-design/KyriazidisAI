@@ -997,3 +997,18 @@ button {
 .hero-card {
     overflow: visible !important;
 }
+.mode-card {
+    color: white !important;
+}
+
+.mode-card strong {
+    color: white !important;
+    text-shadow:
+        0 0 8px rgba(255,255,255,0.8),
+        0 0 18px rgba(255,0,0,0.6);
+}
+
+.mode-card span {
+    font-size: 28px;
+    filter: drop-shadow(0 0 10px rgba(255,0,0,0.7));
+}
