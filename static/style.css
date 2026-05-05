@@ -1087,3 +1087,50 @@ button {
     box-shadow:
         0 0 30px rgba(255,0,0,0.08);
 }
+.mode-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.mode-card strong {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    margin-top: 12px !important;
+    text-shadow:
+        0 0 8px #ffffff,
+        0 0 18px #ff0000,
+        0 0 30px #ff0000 !important;
+}
+
+.auth-box {
+    background: rgba(20, 0, 0, 0.55) !important;
+    border: 1px solid rgba(255, 40, 40, 0.45) !important;
+    border-radius: 24px !important;
+    padding: 18px !important;
+    box-shadow: 0 0 30px rgba(255,0,0,0.22) !important;
+}
+
+.auth-box input {
+    width: 100% !important;
+    background: rgba(0,0,0,0.75) !important;
+    border: 1px solid rgba(255,70,70,0.45) !important;
+    border-radius: 14px !important;
+    color: white !important;
+    padding: 14px !important;
+    margin-bottom: 12px !important;
+}
+
+.system-message {
+    background: rgba(20,0,0,0.45) !important;
+    border: 1px solid rgba(255,60,60,0.35) !important;
+    border-radius: 20px !important;
+    padding: 18px 22px !important;
+    color: white !important;
+    box-shadow: 0 0 25px rgba(255,0,0,0.18) !important;
+}
