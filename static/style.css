@@ -1134,3 +1134,43 @@ button {
     color: white !important;
     box-shadow: 0 0 25px rgba(255,0,0,0.18) !important;
 }
+.mode-card,
+.mode-card * {
+    color: #ffffff !important;
+}
+
+.mode-card strong,
+.mode-card .title,
+.mode-card div,
+.mode-card p {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    text-shadow:
+        0 0 6px #ffffff,
+        0 0 14px #ff0000,
+        0 0 26px #ff0000 !important;
+}
+.mode-title {
+    display: block !important;
+    color: white !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    margin-top: 12px !important;
+    text-align: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow:
+        0 0 8px white,
+        0 0 18px red,
+        0 0 30px red !important;
+}
+
+.mode-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
