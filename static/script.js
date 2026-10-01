@@ -139,3 +139,29 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }, 2000);
 });
+function newChat() {
+    fetch("/new_chat", {
+        method: "POST"
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status !== "success") return;
+
+        const chatbox = document.getElementById("chatbox");
+
+        if (chatbox) {
+            chatbox.innerHTML = `
+                <div class="bot-row">
+                    <div class="mini-logo">K</div>
+                    <div class="bot-message">
+                        <strong>Νέα συνομιλία 🚀</strong><br><br>
+                        Η νέα συνομιλία ξεκίνησε. Γράψε μου κάτι!
+                    </div>
+                </div>
+            `;
+        }
+    })
+    .catch(error => {
+        console.error("New chat error:", error);
+    });
+}
