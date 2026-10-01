@@ -165,3 +165,53 @@ function newChat() {
         console.error("New chat error:", error);
     });
 }
+function loadConversations() {
+    fetch("/conversations")
+        .then(res => res.json())
+        .then(chats => {
+            const list = document.getElementById("chatList");
+
+            if (!list) return;
+
+            list.innerHTML = "";
+
+            chats.forEach(chat => {
+                const button = document.createElement("button");
+
+                button.className = "conversation-item";
+                button.innerText = chat.title || "Νέα συνομιλία";
+
+                button.onclick = function() {
+                    loadChat(chat.id);
+                };
+
+                list.appendChild(button);
+            });
+        })
+        .catch(error => {
+            console.error("Conversations error:", error);
+        });
+}
+
+
+function loadChat(conversationId) {
+    fetch("/load_chat/" + encodeURIComponent(conversationId))
+        .then(res => res.json())
+        .then(messages => {
+            const chatbox = document.getElementById("chatbox");
+
+            if (!chatbox) return;
+
+            chatbox.innerHTML = "";
+
+            messages.forEach(message => {
+                addMessage(
+                    message.message,
+                    message.role === "user" ? "user" : "bot"
+                );
+            });
+        })
+        .catch(error => {
+            console.error("Load chat error:", error);
+        });
+}
