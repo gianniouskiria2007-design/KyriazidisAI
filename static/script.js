@@ -130,7 +130,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-
     const loader = document.getElementById("loader");
     setTimeout(() => {
         if (loader) {
@@ -138,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
             loader.style.display = "none";
         }
     }, 2000);
+    loadConversations();
 });
 function newChat() {
     fetch("/new_chat", {
